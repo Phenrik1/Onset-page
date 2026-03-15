@@ -27,7 +27,66 @@
       padding: 0;
     }
 
-    body {
+    body {<div id="version-switcher" style="
+  width: 100%;
+  background: #1e1f22;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-family: system-ui, sans-serif;
+  backdrop-filter: blur(6px);
+">
+  <a id="classic-link" href="index.html" style="
+    color: #e0c27a;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(224,194,122,0.25);
+    transition: all 0.15s ease-out;
+  ">Classic Version</a>
+
+  <a id="hybrid-link" href="index2.html" style="
+    color: #e0c27a;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(224,194,122,0.25);
+    transition: all 0.15s ease-out;
+  ">Discord Hybrid Version</a>
+</div>
+
+<script>
+  // Highlight the active page
+  const path = window.location.pathname.toLowerCase();
+  const classic = document.getElementById("classic-link");
+  const hybrid = document.getElementById("hybrid-link");
+
+  if (path.includes("index2")) {
+    hybrid.style.background = "rgba(224,194,122,0.25)";
+    hybrid.style.borderColor = "rgba(224,194,122,0.55)";
+    hybrid.style.color = "#fff";
+    hybrid.style.boxShadow = "0 0 10px rgba(224,194,122,0.4)";
+  } else {
+    classic.style.background = "rgba(224,194,122,0.25)";
+    classic.style.borderColor = "rgba(224,194,122,0.55)";
+    classic.style.color = "#fff";
+    classic.style.boxShadow = "0 0 10px rgba(224,194,122,0.4)";
+  }
+</script>
+
       font-family: var(--font-body);
       background: radial-gradient(circle at top, #f4f5f7 0, #d4d5d8 40%, #c1c2c7 100%);
       color: var(--text-main);
