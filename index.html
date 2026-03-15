@@ -122,15 +122,15 @@
     /* ---------------------- HALL CONTAINER ---------------------- */
     #hall-container {
       position: relative;
-      transform: translateY(100vh);
+      transform: translateY(100vh) !important; /* FIX APPLIED */
       transition: transform 2s cubic-bezier(.65,0,.35,1);
       z-index: 1;
       height: 100vh;
       display: flex;
     }
 
-    .hall-rise { transform: translateY(0); }
-    .hall-sink { transform: translateY(100vh); }
+    .hall-rise { transform: translateY(0) !important; }
+    .hall-sink { transform: translateY(100vh) !important; }
 
     /* ---------------------- SIDEBAR ---------------------- */
     #sidebar {
@@ -272,6 +272,7 @@
   </style>
 
 </head>
+
 <body>
 
   <!-- ---------------------- GATE ---------------------- -->
