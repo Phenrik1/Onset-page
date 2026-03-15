@@ -5,7 +5,21 @@
   <title>The Hammer of Aulë</title>
 
   <style>
-    /* --- Dwarven Gate Overlay --- */
+    /* ---------------------- GLOBAL RESET ---------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #111;
+      color: #ddd;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* ---------------------- GATE OVERLAY ---------------------- */
     #gate-overlay {
       position: fixed;
       inset: 0;
@@ -43,4 +57,507 @@
       transition: opacity 1s ease;
     }
 
-    .gate-open-left
+    .gate-open-left { transform: translateX(-100%); }
+    .gate-open-right { transform: translateX(100%); }
+    .gate-close-left { transform: translateX(0); transition-duration: 0.6s; }
+    .gate-close-right { transform: translateX(0); transition-duration: 0.6s; }
+    .gate-fade-out { opacity: 0; pointer-events: none; }
+
+    /* ---------------------- LOGIN PANEL ---------------------- */
+    #gate-login-panel {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: #e6e6e6;
+      font-family: "Cinzel", serif;
+    }
+
+    .gate-title {
+      font-size: 32px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    #gate-name-input {
+      width: 260px;
+      padding: 10px;
+      margin-top: 20px;
+      background: #1a1a1a;
+      border: 2px solid #444;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    #gate-rank-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .rank-btn {
+      width: 48px;
+      height: 48px;
+      background: #222;
+      border: 2px solid #555;
+      color: #d0d0d0;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .rank-btn:hover { background: #333; }
+    .rank-btn.selected { background: #444; border-color: #888; }
+
+    #gate-enter-btn {
+      margin-top: 25px;
+      padding: 10px 20px;
+      background: #3a3a3a;
+      border: 2px solid #666;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* ---------------------- HALL CONTAINER ---------------------- */
+    #hall-container {
+      position: relative;
+      transform: translateY(100vh);
+      transition: transform 2s cubic-bezier(.65,0,.35,1);
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+    }
+
+    .hall-rise { transform: translateY(0); }
+    .hall-sink { transform: translateY(100vh); }
+
+    /* ---------------------- SIDEBAR ---------------------- */
+    #sidebar {
+      width: 240px;
+      background: #1a1a1a;
+      border-right: 2px solid #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #eee;
+    }
+
+    .logout-btn {
+      background: #333;
+      border: 1px solid #555;
+      color: #ccc;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .channels {
+      margin-top: 10px;
+    }
+
+    .channel-item {
+      padding: 10px;
+      margin-bottom: 6px;
+      background: #222;
+      border: 1px solid #444;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .channel-item:hover { background: #2d2d2d; }
+    .channel-item.active { background: #444; }
+
+    /* ---------------------- MAIN AREA ---------------------- */
+    #main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #141414;
+    }
+
+    #channel-header {
+      padding: 20px;
+      border-bottom: 2px solid #333;
+    }
+
+    #current-channel-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    #current-channel-desc {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    /* ---------------------- TOP TABS ---------------------- */
+    #top-tabs {
+      display: flex;
+      border-bottom: 2px solid #333;
+    }
+
+    .top-tab {
+      flex: 1;
+      padding: 12px;
+      background: #1f1f1f;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .top-tab:hover { background: #2a2a2a; }
+    .top-tab.active { background: #444; color: #fff; }
+
+    /* ---------------------- VIEWS ---------------------- */
+    #views {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .view {
+      display: none;
+      height: 100%;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* ---------------------- CHAT ---------------------- */
+    #messages {
+      height: calc(100% - 80px);
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    #chat-input-bar {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    #chat-input {
+      flex: 1;
+      padding: 10px;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #fff;
+      resize: none;
+      height: 60px;
+    }
+
+    #send-btn {
+      width: 80px;
+      background: #333;
+      border: 1px solid #555;
+      color: #ccc;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+<body>
+
+  <!-- ---------------------- GATE ---------------------- -->
+  <div id="gate-overlay">
+    <div id="gate-left" class="gate-slab"></div>
+    <div id="gate-right" class="gate-slab"></div>
+    <div id="gate-seam"></div>
+
+    <div id="gate-login-panel">
+      <h1 class="gate-title">The Hammer of Aulë</h1>
+
+      <input id="gate-name-input" type="text" placeholder="Enter your name..." />
+
+      <div id="gate-rank-buttons">
+        <button data-rank="recruit" class="rank-btn">ᚱ</button>
+        <button data-rank="kinsman" class="rank-btn">ᚲ</button>
+        <button data-rank="seneschal" class="rank-btn">ᛋ</button>
+        <button data-rank="lord" class="rank-btn">ᛚ</button>
+        <button data-rank="thane" class="rank-btn">ᚦ</button>
+      </div>
+
+      <button id="gate-enter-btn">Enter the Hall</button>
+    </div>
+  </div>
+
+  <!-- ---------------------- HALL ---------------------- -->
+  <div id="hall-container">
+    <div id="app">
+
+      <div id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">Halls</div>
+          <button id="logout-btn" class="logout-btn">Log out</button>
+        </div>
+        <div id="channel-list" class="channels"></div>
+      </div>
+
+      <div id="main-area">
+
+        <div id="channel-header">
+          <div id="current-channel-name"></div>
+          <div id="current-channel-desc"></div>
+        </div>
+
+        <div id="top-tabs">
+          <button class="top-tab" data-view="chat">Chat</button>
+          <button class="top-tab" data-view="announcements">Announcements</button>
+          <button class="top-tab" data-view="planner">Planner</button>
+          <button class="top-tab" data-view="members">Members</button>
+          <button class="top-tab" data-view="archives">Archives</button>
+        </div>
+
+        <div id="views">
+
+          <div id="chat-view" class="view active">
+            <div id="messages"></div>
+            <div id="chat-input-bar">
+              <textarea id="chat-input" placeholder="Speak, friend..."></textarea>
+              <button id="send-btn">Send</button>
+            </div>
+          </div>
+
+          <div id="announcements-view" class="view"></div>
+          <div id="planner-view" class="view"></div>
+          <div id="members-view" class="view"></div>
+          <div id="archives-view" class="view"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------- JAVASCRIPT ---------------------- -->
+  <script>
+    let gateState = "closed";
+
+    const gateOverlay = document.getElementById("gate-overlay");
+    const gateLeft = document.getElementById("gate-left");
+    const gateRight = document.getElementById("gate-right");
+    const gateSeam = document.getElementById("gate-seam");
+    const hall = document.getElementById("hall-container");
+
+    const nameInput = document.getElementById("gate-name-input");
+    const rankButtons = document.querySelectorAll(".rank-btn");
+    const enterBtn = document.getElementById("gate-enter-btn");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    let selectedRank = null;
+
+    rankButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        rankButtons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedRank = btn.dataset.rank;
+      });
+    });
+
+    const channels = [
+      { id: "mead",  name: "Mead Hall",     desc: "General kinship chatter by the fire." },
+      { id: "raids", name: "War Council",   desc: "Planning raids and instances." },
+      { id: "craft", name: "Forge & Anvil", desc: "Crafting, gear, and trade." },
+      { id: "lore",  name: "Lore Archive",  desc: "Stories, screenshots, and memories." }
+    ];
+
+    let currentChannel = "mead";
+    let messagesByChannel = {
+      mead: [],
+      raids: [],
+      craft: [],
+      lore: []
+    };
+
+    const channelListEl = document.getElementById("channel-list");
+    const currentChannelNameEl = document.getElementById("current-channel-name");
+    const currentChannelDescEl = document.getElementById("current-channel-desc");
+    const messagesEl = document.getElementById("messages");
+    const chatInput = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    const views = {
+      chat: document.getElementById("chat-view"),
+      announcements: document.getElementById("announcements-view"),
+      planner: document.getElementById("planner-view"),
+      members: document.getElementById("members-view"),
+      archives: document.getElementById("archives-view")
+    };
+
+    const topTabs = document.querySelectorAll(".top-tab");
+
+    enterBtn.addEventListener("click", () => {
+      const name = nameInput.value.trim();
+      if (!name || !selectedRank) return;
+      if (gateState !== "closed") return;
+
+      gateState = "opening";
+
+      gateSeam.style.opacity = "1";
+
+      gateLeft.classList.add("gate-open-left");
+      gateRight.classList.add("gate-open-right");
+
+      initHall();
+
+      hall.classList.add("hall-rise");
+
+      setTimeout(() => {
+        gateOverlay.classList.add("gate-fade-out");
+        gateState = "hall-visible";
+      }, 2000);
+    });
+
+    function closeGate() {
+      if (gateState !== "hall-visible") return;
+      gateState = "closing";
+
+      gateOverlay.classList.remove("gate-fade-out");
+
+      hall.classList.remove("hall-rise");
+      hall.classList.add("hall-sink");
+
+      setTimeout(() => {
+        gateLeft.classList.remove("gate-open-left");
+        gateRight.classList.remove("gate-open-right");
+
+        gateLeft.classList.add("gate-close-left");
+        gateRight.classList.add("gate-close-right");
+
+        gateSeam.style.opacity = "0.4";
+
+        hall.classList.remove("hall-sink");
+
+        resetHall();
+
+        gateState = "closed";
+      }, 2000);
+    }
+
+    logoutBtn.addEventListener("click", () => {
+      closeGate();
+    });
+
+    function initHall() {
+      renderChannelList();
+      switchChannel("mead");
+      setActiveView("chat");
+    }
+
+    function resetHall() {
+      currentChannel = "mead";
+      messagesByChannel = {
+        mead: [],
+        raids: [],
+        craft: [],
+        lore: []
+      };
+      messagesEl.innerHTML = "";
+      chatInput.value = "";
+      renderChannelList();
+      switchChannel("mead");
+      setActiveView("chat");
+    }
+
+    function renderChannelList() {
+      channelListEl.innerHTML = "";
+      channels.forEach(ch => {
+        const div = document.createElement("div");
+        div.className = "channel-item" + (ch.id === currentChannel ? " active" : "");
+        div.textContent = ch.name;
+        div.dataset.channelId = ch.id;
+        div.addEventListener("click", () => {
+          if (gateState !== "hall-visible") return;
+          switchChannel(ch.id);
+        });
+        channelListEl.appendChild(div);
+      });
+    }
+
+    function switchChannel(id) {
+      currentChannel = id;
+      const ch = channels.find(c => c.id === id);
+      if (!ch) return;
+      currentChannelNameEl.textContent = ch.name;
+      currentChannelDescEl.textContent = ch.desc;
+      renderChannelList();
+      renderMessages();
+    }
+
+    function renderMessages() {
+      messagesEl.innerHTML = "";
+      const msgs = messagesByChannel[currentChannel] || [];
+      msgs.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "message";
+        div.style.marginBottom = "6px";
+        div.innerHTML = `<strong>${msg.author}</strong>: ${msg.text}`;
+        messagesEl.appendChild(div);
+      });
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      if (gateState !== "hall-visible") return;
+      const text = chatInput.value.trim();
+      if (!text) return;
+      const name = nameInput.value.trim() || "Unknown Dwarf";
+
+      if (!messagesByChannel[currentChannel]) {
+        messagesByChannel[currentChannel] = [];
+      }
+
+      messagesByChannel[currentChannel].push({
+        author: name,
+        text
+      });
+
+      chatInput.value = "";
+      renderMessages();
+    }
+
+    topTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        if (gateState !== "hall-visible") return;
+        const view = tab.dataset.view;
+        setActiveView(view);
+      });
+    });
+
+    function setActiveView(viewId) {
+      Object.keys(views).forEach(id => {
+        views[id].classList.toggle("active", id === viewId);
+      });
+      topTabs.forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.view === viewId);
+      });
+    }
+
+    setActiveView("chat");
+  </script>
+
+</body>
+</html>
