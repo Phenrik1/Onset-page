@@ -2,222 +2,855 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rare Long-Run Onset – Descriptive and Analytical Overview</title>
+  <title>The Hammer of Aulë – Sting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #f4f0e7;
-      --text: #222;
-      --muted: #555;
-      --accent: #4b5a6a;
-      --border: #c3b79a;
-      --code: #2f3640;
+      --bg-stone: #d4d5d8;          /* light carved stone */
+      --bg-stone-deep: #b7b8bc;     /* deeper stone for panels */
+      --bg-stone-dark: #9a9ba0;     /* darker accents */
+      --text-main: #1f2227;
+      --text-soft: #2f3238;
+      --gold: #c89b3c;
+      --gold-soft: #e0c27a;
+      --ember: #e07a3c;
+      --accent-line: #b08a3a;
+      --panel-radius: 10px;
+      --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.25);
+      --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-heading: "Georgia", "Times New Roman", serif;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: var(--font-body);
+      background: radial-gradient(circle at top, #f4f5f7 0, #d4d5d8 40%, #c1c2c7 100%);
+      color: var(--text-main);
+      min-height: 100vh;
     }
 
-    .page {
-      max-width: 960px;
+    .hall {
+      max-width: 1100px;
       margin: 0 auto;
       padding: 2.5rem 1.5rem 3.5rem;
     }
 
-    header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1.5rem;
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1.5rem;
-    }
+    /* STONE FRAME / PILLARS */
 
-    header h1 {
-      margin: 0;
-      font-size: 1.9rem;
-      letter-spacing: 0.03em;
-    }
-
-    header p {
-      margin: 0.35rem 0 0;
-      color: var(--muted);
-      max-width: 32rem;
-      font-size: 0.95rem;
-    }
-
-    .compass {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 0, 0, 0.25);
-      background: radial-gradient(circle at 30% 30%, #f8f5ee 0, #d4c8b0 55%, #b1a58b 100%);
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.4) inset,
-        0 4px 10px rgba(0, 0, 0, 0.25);
+    .hall-frame {
+      background: linear-gradient(180deg, #e3e4e7 0, #d4d5d8 40%, #c1c2c7 100%);
+      border-radius: 18px;
+      box-shadow: var(--shadow-soft);
+      padding: 2.25rem 2.25rem 2.75rem;
       position: relative;
       overflow: hidden;
     }
 
-    .compass::before {
+    .hall-frame::before,
+    .hall-frame::after {
       content: "";
       position: absolute;
-      inset: 10%;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      background:
-        radial-gradient(circle, rgba(255, 255, 255, 0.35) 0, transparent 60%),
-        repeating-radial-gradient(circle, rgba(0, 0, 0, 0.06) 0, rgba(0, 0, 0, 0.06) 1px, transparent 1px, transparent 3px);
-      mix-blend-mode: multiply;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      background: linear-gradient(180deg, #cfd0d4 0, #b7b8bc 50%, #a1a2a8 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+                  inset 0 0 0 2px rgba(0, 0, 0, 0.08);
     }
 
-    .compass-label {
-      position: absolute;
-      bottom: 6px;
+    .hall-frame::before {
       left: 0;
+      border-radius: 18px 0 0 18px;
+    }
+
+    .hall-frame::after {
       right: 0;
-      text-align: center;
-      font-size: 0.65rem;
-      color: var(--code);
+      border-radius: 0 18px 18px 0;
+    }
+
+    .hall-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER / LINTEL */
+
+    header.hall-header {
+      border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hammer-emblem {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #f7f3e5 0, #d2b46c 35%, #8b6a2b 100%);
+      box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.4),
+        0 0 0 4px rgba(0, 0, 0, 0.25),
+        0 10px 18px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hammer-emblem::before {
+      content: "";
+      width: 60%;
+      height: 18%;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #f3f3f3 0, #d7d7d7 40%, #b0b0b0 100%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+      position: absolute;
+      top: 26%;
+    }
+
+    .hammer-emblem::after {
+      content: "";
+      width: 16%;
+      height: 52%;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #d7d7d7 0, #b0b0b0 40%, #8a8a8a 100%);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+      position: absolute;
+      top: 38%;
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      color: var(--text-main);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .brand-text h1 span {
+      color: var(--gold);
+    }
+
+    .brand-text p {
+      font-size: 0.9rem;
       letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
     }
 
-    main section {
-      margin-bottom: 2.25rem;
-      padding-bottom: 1.75rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    nav.hall-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 1rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    main section:last-of-type {
+    nav.hall-nav a {
+      text-decoration: none;
+      color: var(--text-soft);
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: linear-gradient(180deg, #e8e9ec 0, #d7d8dc 100%);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all 0.18s ease-out;
+    }
+
+    nav.hall-nav a:hover {
+      color: #1b1b1b;
+      border-color: var(--gold);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 0 12px rgba(200, 155, 60, 0.55);
+      background: linear-gradient(180deg, #f5f0e3 0, #e4d3a4 100%);
+    }
+
+    /* HERO / GRAND ENTRANCE */
+
+    .hero {
+      background: radial-gradient(circle at top, #f7f4ec 0, #dcd7c8 35%, #c1c2c7 100%);
+      border-radius: var(--panel-radius);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      padding: 1.75rem 1.75rem 1.9rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0, transparent 40%),
+        radial-gradient(circle at bottom, rgba(224, 122, 60, 0.25) 0, transparent 55%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 1.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-tagline {
+      font-size: 1rem;
+      color: var(--text-soft);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-meta {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-meta span {
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #f5f0e3 0, #e4d3a4 100%);
+      border-color: var(--gold);
+      color: #1b1b1b;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 0 14px rgba(200, 155, 60, 0.6);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #fff8e8 0, #edd9a9 100%);
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.12),
+        0 0 18px rgba(200, 155, 60, 0.75);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.4);
+      border-color: rgba(0, 0, 0, 0.12);
+      color: var(--text-soft);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: var(--gold);
+      color: #1b1b1b;
+    }
+
+    .hero-hall-visual {
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, #e7e8ec 0, #cfd0d5 40%, #b7b8bc 100%);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+        0 10px 22px rgba(0, 0, 0, 0.35);
+      padding: 1.1rem 1.2rem 1.3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-hall-visual::before,
+    .hero-hall-visual::after {
+      content: "";
+      position: absolute;
+      top: 10%;
+      bottom: 10%;
+      width: 18%;
+      background: linear-gradient(180deg, #d7d8dc 0, #b7b8bc 50%, #9a9ba0 100%);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        0 0 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-hall-visual::before {
+      left: 8%;
+    }
+
+    .hero-hall-visual::after {
+      right: 8%;
+    }
+
+    .hero-hall-arch {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10%;
+      width: 70%;
+      height: 40%;
+      border-radius: 50% 50% 0 0;
+      border: 3px solid rgba(0, 0, 0, 0.25);
       border-bottom: none;
-      padding-bottom: 0;
+      box-shadow:
+        0 -4px 10px rgba(0, 0, 0, 0.35),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4);
+      background: radial-gradient(circle at bottom, rgba(224, 122, 60, 0.45) 0, transparent 60%);
     }
 
-    h2 {
-      margin-top: 0;
-      font-size: 1.25rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--accent);
+    .hero-hall-steps {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 6%;
+      width: 80%;
+      height: 10%;
+      background: linear-gradient(180deg, #cfd0d5 0, #b7b8bc 100%);
+      box-shadow:
+        0 -2px 0 rgba(255, 255, 255, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.35);
+      border-radius: 8px;
     }
 
-    h3 {
-      margin-top: 1.5rem;
-      font-size: 1.05rem;
-      color: var(--accent);
-    }
-
-    p {
-      margin: 0.4rem 0 0.6rem;
-    }
-
-    ul {
-      margin: 0.4rem 0 0.6rem 1.2rem;
-      padding: 0;
-    }
-
-    li {
-      margin: 0.2rem 0;
-    }
-
-    .tagline {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .note {
-      font-size: 0.9rem;
-      color: var(--muted);
-      border-left: 3px solid var(--border);
-      padding-left: 0.75rem;
-      margin-top: 0.75rem;
-    }
-
-    .subtle-label {
+    .hero-hall-caption {
+      position: relative;
+      z-index: 1;
       font-size: 0.8rem;
+      text-align: center;
+      margin-top: 0.4rem;
+      color: var(--text-soft);
+    }
+
+    /* SECTION GRID */
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.4fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--bg-stone) 0, var(--bg-stone-deep) 100%);
+      border-radius: var(--panel-radius);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+        0 8px 18px rgba(0, 0, 0, 0.25);
+      padding: 1.25rem 1.3rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: var(--text-main);
+    }
+
+    .panel-tag {
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
-      color: var(--muted);
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .panel-divider {
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-line), transparent);
+      margin-bottom: 0.7rem;
+      opacity: 0.9;
+    }
+
+    .panel-body {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .panel-body ul {
+      list-style: none;
+      margin-top: 0.4rem;
+    }
+
+    .panel-body li {
+      margin-bottom: 0.25rem;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+
+    .panel-body li::before {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      top: 0.05rem;
+      font-size: 0.6rem;
+      color: var(--gold);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      font-size: 0.78rem;
+      margin-right: 0.35rem;
       margin-bottom: 0.25rem;
     }
 
-    .diagram-placeholder {
-      border: 1px dashed rgba(0, 0, 0, 0.25);
-      border-radius: 8px;
-      padding: 0.9rem 1rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.4);
-      margin-top: 0.75rem;
+    .pill span {
+      font-size: 0.7rem;
+      color: var(--gold);
     }
 
-    @media (max-width: 720px) {
-      header {
-        flex-direction: column-reverse;
+    /* RECRUITMENT / DISCORD / CONTACT */
+
+    .recruitment-highlight {
+      background: linear-gradient(180deg, #f5f0e3 0, #e4d3a4 100%);
+      border-radius: var(--panel-radius);
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+        0 10px 22px rgba(0, 0, 0, 0.3);
+      padding: 1.4rem 1.5rem 1.6rem;
+      margin-bottom: 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .recruitment-highlight::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.6) 0, transparent 45%),
+        radial-gradient(circle at bottom, rgba(224, 122, 60, 0.35) 0, transparent 55%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+
+    .recruitment-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .recruitment-text h2 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      color: #1b1b1b;
+    }
+
+    .recruitment-text p {
+      font-size: 0.9rem;
+      color: #3b3424;
+      max-width: 520px;
+    }
+
+    .recruitment-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 220px;
+    }
+
+    .discord-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      background: #23272a;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #99aab5;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.4),
+        0 8px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.18s ease-out;
+    }
+
+    .discord-link:hover {
+      background: #2c2f33;
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.6),
+        0 10px 22px rgba(0, 0, 0, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .discord-link span.icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #7289da;
+      display: inline-block;
+    }
+
+    .contact-note {
+      font-size: 0.8rem;
+      color: #4a3c24;
+    }
+
+    /* FOOTER */
+
+    footer.hall-footer {
+      border-top: 2px solid rgba(0, 0, 0, 0.08);
+      padding-top: 1.1rem;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .footer-runic {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-hall-visual {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hall-frame {
+        padding: 1.75rem 1.4rem 2.2rem;
+      }
+      header.hall-header {
+        flex-direction: column;
         align-items: flex-start;
       }
-      .compass {
-        align-self: flex-end;
+      nav.hall-nav {
+        justify-content: flex-start;
+      }
+      .sections-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .brand-text h1 {
+        font-size: 1.4rem;
+      }
+      .hero-title {
+        font-size: 1.5rem;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="page">
-    <header>
-      <div>
-        <h1>Rare Long-Run Onset</h1>
-        <p class="tagline">
-          A strictly descriptive and analytical breakdown of a single, coherent onset event.
-        </p>
+  <div class="hall">
+    <div class="hall-frame">
+      <div class="hall-inner">
+
+        <!-- HEADER / LINTEL -->
+        <header class="hall-header">
+          <div class="brand">
+            <div class="hammer-emblem" aria-hidden="true"></div>
+            <div class="brand-text">
+              <h1>The Hammer of <span>Aulë</span></h1>
+              <p>By Aulë’s Hammer, We Stand United</p>
+            </div>
+          </div>
+          <nav class="hall-nav">
+            <a href="#about">About</a>
+            <a href="#server">Server</a>
+            <a href="#values">Values</a>
+            <a href="#roster">Roster &amp; Roles</a>
+            <a href="#events">Events &amp; Raids</a>
+            <a href="#recruitment">Recruitment</a>
+            <a href="#discord">Discord</a>
+            <a href="#contact">Officers</a>
+          </nav>
+        </header>
+
+        <!-- HERO / GRAND ENTRANCE -->
+        <section class="hero" id="top">
+          <div class="hero-inner">
+            <div>
+              <h2 class="hero-title">Welcome to the Halls of The Hammer of Aulë</h2>
+              <p class="hero-tagline">
+                A kinship forged in stone and steel, standing together in the deep places of Middle‑earth.
+              </p>
+              <p class="hero-meta">
+                <span>Server:</span> Sting &nbsp;•&nbsp;
+                <span>Focus:</span> Fellowship, Raids, Crafting &amp; Story
+              </p>
+              <div class="hero-actions">
+                <a href="#recruitment" class="btn-primary">Join the Kinship</a>
+                <a href="#discord" class="btn-ghost">Enter the Discord Hall</a>
+              </div>
+            </div>
+            <div>
+              <div class="hero-hall-visual" aria-hidden="true">
+                <div class="hero-hall-arch"></div>
+                <div class="hero-hall-steps"></div>
+              </div>
+              <div class="hero-hall-caption">
+                The grand entrance hall of our kinship – carved stone, golden light, and steadfast company.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MAIN SECTIONS GRID -->
+        <section class="sections-grid">
+          <!-- ABOUT -->
+          <article class="panel" id="about">
+            <div class="panel-header">
+              <h3 class="panel-title">About the Kinship</h3>
+              <div class="panel-tag">Lore &amp; Purpose</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>
+                The Hammer of Aulë is a kinship dedicated to fellowship, craftsmanship, and shared adventure.
+                We walk the halls of Middle‑earth as comrades, not strangers – from the quiet roads of the Shire
+                to the deepest shadows of Moria.
+              </p>
+              <p>
+                We value steady progress over haste, and honor over glory. Whether you come to forge, to fight,
+                or to follow the stories of the Free Peoples, you will find a place at our hearth.
+              </p>
+            </div>
+          </article>
+
+          <!-- SERVER -->
+          <article class="panel" id="server">
+            <div class="panel-header">
+              <h3 class="panel-title">Server: Sting</h3>
+              <div class="panel-tag">Our Home</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>
+                We dwell on the <strong>Sting</strong> server – a close‑knit community where names are remembered
+                and kinships endure. Our hall stands open to those who seek a stable, lore‑aware group with a
+                long‑term view.
+              </p>
+              <ul>
+                <li>Time zones: EU‑friendly activity</li>
+                <li>Playstyle: Casual‑to‑organized, with room for both new and veteran players</li>
+                <li>Focus: Group content, story, crafting, and social events</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- VALUES -->
+          <article class="panel" id="values">
+            <div class="panel-header">
+              <h3 class="panel-title">Kinship Values</h3>
+              <div class="panel-tag">What We Stand For</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>Our hall is built on a few simple, unshakable stones:</p>
+              <ul>
+                <li>Respect for every member, regardless of level or experience</li>
+                <li>Patience and guidance for those learning the game or returning after a break</li>
+                <li>Reliability in group content – if we commit, we show up</li>
+                <li>Enjoyment of the world and its stories, not just the endgame</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- ROSTER / ROLES -->
+          <article class="panel" id="roster">
+            <div class="panel-header">
+              <h3 class="panel-title">Roster &amp; Roles</h3>
+              <div class="panel-tag">The Company</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>We welcome a balanced company of Free Peoples:</p>
+              <div>
+                <span class="pill"><span>■</span> Tanks &amp; Wardens</span>
+                <span class="pill"><span>■</span> Healers &amp; Support</span>
+                <span class="pill"><span>■</span> Melee &amp; Ranged DPS</span>
+                <span class="pill"><span>■</span> Crafters &amp; Gatherers</span>
+              </div>
+              <p style="margin-top:0.5rem;">
+                Whether you bring a single main or a stable of alts, there is room in the hall. We value
+                reliability and attitude more than perfect builds.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- EVENTS / RECRUITMENT / DISCORD / CONTACT -->
+        <section class="sections-grid">
+          <!-- EVENTS / RAIDS -->
+          <article class="panel" id="events">
+            <div class="panel-header">
+              <h3 class="panel-title">Events &amp; Raids</h3>
+              <div class="panel-tag">Forged in Battle</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>
+                We organize regular kinship runs, from fellowship instances to larger raids, depending on
+                interest and availability.
+              </p>
+              <ul>
+                <li>Planned group nights announced in advance in Discord</li>
+                <li>Mixture of progression runs and relaxed “for fun” evenings</li>
+                <li>No mandatory attendance – real life comes first</li>
+              </ul>
+              <p>
+                If you enjoy learning encounters together and improving as a group, you will feel at home here.
+              </p>
+            </div>
+          </article>
+
+          <!-- CONTACT / OFFICERS -->
+          <article class="panel" id="contact">
+            <div class="panel-header">
+              <h3 class="panel-title">Contact &amp; Officers</h3>
+              <div class="panel-tag">At the High Table</div>
+            </div>
+            <div class="panel-divider"></div>
+            <div class="panel-body">
+              <p>
+                To speak with the kinship leadership, reach out in‑game or via Discord once you join the hall.
+              </p>
+              <ul>
+                <li>Kin Leader: <em>(Name here)</em></li>
+                <li>Officers: <em>(Names here)</em></li>
+              </ul>
+              <p style="margin-top:0.4rem;">
+                You can update these names directly in the code as your officer council changes.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- RECRUITMENT / DISCORD -->
+        <section class="recruitment-highlight" id="recruitment">
+          <div class="recruitment-inner">
+            <div class="recruitment-text">
+              <h2>Recruitment &amp; Joining the Hall</h2>
+              <p>
+                We are open to new members who share our values and wish to walk with us on Sting. There is no
+                strict gear or level requirement – only a willingness to learn, to respect others, and to stand
+                together when the drums echo in the deep.
+              </p>
+            </div>
+            <div class="recruitment-actions" id="discord">
+              <a href="#" class="discord-link">
+                <span class="icon" aria-hidden="true"></span>
+                <span>Enter the Discord Hall</span>
+              </a>
+              <div class="contact-note">
+                Share your character name, role, and a few words about your playstyle when you join the Discord.
+                An officer will greet you and guide you into the kinship.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="hall-footer">
+          <div class="footer-runic">The Hammer of Aulë • Sting</div>
+          <div>By Aulë’s Hammer, We Stand United.</div>
+          <div>&copy; <span id="year"></span> The Hammer of Aulë – Unofficial LOTRO Kinship Site.</div>
+        </footer>
+
       </div>
-      <div class="compass" aria-hidden="true">
-        <div class="compass-label">Onset Map</div>
-      </div>
-    </header>
+    </div>
+  </div>
 
-    <main>
-      <section id="descriptive">
-        <h2>Descriptive Overview</h2>
-
-        <h3>1. Tonal Characteristics</h3>
-        <ul>
-          <li><strong>Attack:</strong> Sharper and slightly louder than baseline, producing a clear and immediate onset.</li>
-          <li><strong>Tail:</strong> A longer metallic resonance that decays smoothly and evenly.</li>
-          <li><strong>Shimmer:</strong> A brief, smooth, higher-pitched transient appearing immediately after the attack.</li>
-        </ul>
-
-        <h3>2. Spatial Behavior</h3>
-        <ul>
-          <li><strong>Forward Motion:</strong> A shallow, linear, centered arc with constant speed.</li>
-          <li><strong>Distance:</strong> Short, ending precisely at the bowl’s surface.</li>
-          <li><strong>Surface Contact:</strong> Soft and yielding, with no rebound or scattering.</li>
-        </ul>
-
-        <h3>3. Atmospheric Conditions</h3>
-        <ul>
-          <li><strong>Temperature:</strong> Cool and neutral.</li>
-          <li><strong>Density:</strong> Thicker than normal, giving a subtle sense of weight.</li>
-          <li><strong>Movement:</strong> Faint internal motion with no directional bias.</li>
-          <li><strong>Texture:</strong> Coarser granular pockets that shape the dissolution environment.</li>
-        </ul>
-
-        <h3>4. Transition and Cadence</h3>
-        <ul>
-          <li><strong>Dissolution:</strong> The shimmer dissolves into the surrounding air layer.</li>
-          <li><strong>Cadence:</strong> Quickened and evenly spaced after the shimmer fades.</li>
-          <li><strong>Return to Normal:</strong> Abrupt reset to baseline state.</li>
-        </ul>
-
-        <p class="note">This section describes observable behavior without interpreting
+  <script>
+    // Simple year injection
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
