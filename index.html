@@ -5,6 +5,311 @@
   <title>The Hammer of Aulë – Hall Interface</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    /* --- Global layout for hall (keep/merge with your existing styles) --- */
+body {
+  margin: 0;
+  background: #050607;
+  color: #e4e4e4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 260px;
+  background: #111317;
+  border-right: 1px solid #2a2d33;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #2a2d33;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9c9c9;
+}
+
+.logout-btn {
+  background: #2a2d33;
+  border: 1px solid #444;
+  color: #ddd;
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+/* Channel list */
+.channels {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+/* Main area */
+#main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top, #1b1f26 0, #050607 55%);
+}
+
+/* Channel header */
+#channel-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid #2a2d33;
+}
+
+#current-channel-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+#current-channel-desc {
+  font-size: 12px;
+  color: #a0a0a0;
+  margin-top: 2px;
+}
+
+/* Top tabs */
+#top-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #2a2d33;
+}
+
+.top-tab {
+  background: #181b21;
+  border: 1px solid #2a2d33;
+  color: #cfcfcf;
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.top-tab.active {
+  background: #262b35;
+  border-color: #4b5568;
+}
+
+/* Views */
+#views {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Chat view */
+#messages {
+  height: calc(100% - 70px);
+  overflow-y: auto;
+  padding: 10px 16px 0;
+}
+
+#chat-input-bar {
+  height: 70px;
+  border-top: 1px solid #2a2d33;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #0b0d10;
+}
+
+#chat-input {
+  flex: 1;
+  resize: none;
+  background: #111317;
+  border: 1px solid #2a2d33;
+  color: #e4e4e4;
+  padding: 6px 8px;
+}
+
+#send-btn {
+  width: 80px;
+  background: #2f3744;
+  border: 1px solid #4b5568;
+  color: #e4e4e4;
+  cursor: pointer;
+}
+
+/* Members & archives basic */
+#members-grid,
+#archives-grid {
+  padding: 12px 16px;
+  overflow-y: auto;
+}
+
+/* --- Dwarven Gate Overlay --- */
+#gate-overlay {
+  position: fixed;
+  inset: 0;
+  background: #050607;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.gate-slab {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #2b2b2b;
+  background-image: linear-gradient(145deg, #3a3a3a, #1e1e1e);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  transition: transform 2s cubic-bezier(.65,0,.35,1);
+}
+
+#gate-left {
+  left: 0;
+  transform: translateX(0);
+}
+
+#gate-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+#gate-seam {
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, #ffb45e, #ff6a00, #ffb45e);
+  box-shadow: 0 0 20px #ff6a00;
+  opacity: 0.7;
+  transition: opacity 1s ease;
+}
+
+/* Opening */
+.gate-open-left {
+  transform: translateX(-100%);
+}
+
+.gate-open-right {
+  transform: translateX(100%);
+}
+
+/* Fast mechanical snap close */
+.gate-close-left {
+  transform: translateX(0);
+  transition-duration: 0.6s;
+}
+
+.gate-close-right {
+  transform: translateX(0);
+  transition-duration: 0.6s;
+}
+
+/* Fade gate away after opening */
+.gate-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Login panel */
+#gate-login-panel {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #e6e6e6;
+  font-family: "Cinzel", serif;
+}
+
+.gate-title {
+  font-size: 26px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#gate-name-input {
+  width: 260px;
+  padding: 10px;
+  margin-top: 20px;
+  background: #1a1a1a;
+  border: 2px solid #444;
+  color: #fff;
+  font-size: 16px;
+}
+
+#gate-rank-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.rank-btn {
+  width: 48px;
+  height: 48px;
+  background: #222;
+  border: 2px solid #555;
+  color: #d0d0d0;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.rank-btn:hover {
+  background: #333;
+}
+
+.rank-btn.selected {
+  background: #444;
+  border-color: #888;
+}
+
+#gate-enter-btn {
+  margin-top: 25px;
+  padding: 10px 20px;
+  background: #3a3a3a;
+  border: 2px solid #666;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* --- Hall container rise/sink --- */
+#hall-container {
+  position: relative;
+  transform: translateY(100vh);
+  transition: transform 2s cubic-bezier(.65,0,.35,1);
+  z-index: 1;
+}
+
+.hall-rise {
+  transform: translateY(0);
+}
+
+.hall-sink {
+  transform: translateY(100vh);
+}
+
     :root {
       --bg-slate: #2a2c31;
       --bg-slate-deep: #1f2025;
