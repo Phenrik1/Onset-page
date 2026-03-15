@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>The Hammer of Aulë – Hall Chat</title>
+  <title>The Hammer of Aulë – Hall Interface</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -44,12 +44,9 @@
       text-decoration: none;
     }
 
-    /* APP LAYOUT */
-
     .app {
       display: grid;
       grid-template-columns: 260px 1fr;
-      grid-template-rows: 1fr;
       width: 100%;
       min-height: 100vh;
     }
@@ -61,7 +58,7 @@
       }
       .sidebar {
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
         overflow-x: auto;
       }
       .channels {
@@ -218,7 +215,7 @@
       text-transform: uppercase;
     }
 
-    /* MAIN AREA */
+    /* MAIN */
 
     .main {
       display: flex;
@@ -292,7 +289,7 @@
       background: var(--bg-chat);
     }
 
-    /* CHAT AREA */
+    /* CHAT */
 
     .messages {
       padding: 0.8rem 1rem;
@@ -357,8 +354,6 @@
       margin: 0.4rem 0;
     }
 
-    /* INPUT AREA */
-
     .input-area {
       padding: 0.6rem 1rem 0.8rem;
       border-top: 1px solid var(--border-subtle);
@@ -412,7 +407,7 @@
       transform: none;
     }
 
-    /* ANNOUNCEMENTS / FORUM VIEW */
+    /* INFO VIEWS */
 
     .info-view {
       padding: 1rem 1.2rem;
@@ -459,6 +454,147 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
+    /* MEMBERS VIEW */
+
+    .members-view {
+      padding: 1rem 1.2rem;
+      overflow-y: auto;
+      background: #2b2d31;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .member-card {
+      background: #26272d;
+      border-radius: 10px;
+      border: 1px solid #202225;
+      padding: 0.7rem 0.8rem;
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .member-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 20%, #f7f3e5 0, #b0b0b0 40%, #5a5a5a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 0 8px rgba(0, 0, 0, 0.7);
+      flex-shrink: 0;
+    }
+
+    .member-icon svg {
+      width: 70%;
+      height: 70%;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+    }
+
+    .member-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .member-name {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .member-class {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .member-role {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 0.1rem;
+    }
+
+    .role-lord {
+      color: #f1d17a;
+    }
+
+    .role-seneschal {
+      color: #e0b06a;
+    }
+
+    .role-kinsman {
+      color: #c0c7d8;
+    }
+
+    .role-recruit {
+      color: #9a9ba0;
+    }
+
+    /* ARCHIVES VIEW */
+
+    .archives-view {
+      padding: 1rem 1.2rem;
+      overflow-y: auto;
+      background: #2b2d31;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .archives-upload {
+      background: #26272d;
+      border-radius: 10px;
+      border: 1px solid #202225;
+      padding: 0.8rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .archives-upload input[type="file"] {
+      font-size: 0.8rem;
+    }
+
+    .archives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.7rem;
+    }
+
+    .archives-item {
+      background: #26272d;
+      border-radius: 10px;
+      border: 1px solid #202225;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .archives-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 180px;
+    }
+
+    .archives-caption {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
   </style>
 </head>
 <body>
@@ -469,26 +605,32 @@
         <div class="hammer-emblem" aria-hidden="true"></div>
         <div class="sidebar-title">
           <h1>The Hammer of <span>Aulë</span></h1>
-          <p>Hall Chat • Sting</p>
+          <p>Kinship Hall • Sting</p>
         </div>
       </div>
 
-      <div class="channels-label">Text Channels</div>
+      <div class="channels-label">Halls & Chambers</div>
       <div class="channels" id="channel-list">
-        <button data-channel="general" class="active">
-          <span class="hash">#</span> general
+        <button data-channel="mead" class="active">
+          <span class="hash">#</span> The Mead Hall
         </button>
-        <button data-channel="raids">
-          <span class="hash">#</span> raids-and-runs
+        <button data-channel="war">
+          <span class="hash">#</span> The War Room
         </button>
         <button data-channel="crafting">
-          <span class="hash">#</span> crafting-hall
+          <span class="hash">#</span> The Crafting Hall
         </button>
-        <button data-channel="recruitment">
-          <span class="hash">#</span> recruitment
+        <button data-channel="archives">
+          <span class="hash">#</span> The Archives
+        </button>
+        <button data-channel="announcements">
+          <span class="hash">#</span> Hall of Announcements
+        </button>
+        <button data-channel="members">
+          <span class="hash">#</span> Members of the Hall
         </button>
         <button data-channel="officers">
-          <span class="hash">#</span> officers-table
+          <span class="hash">#</span> Officers’ Table
         </button>
       </div>
 
@@ -502,10 +644,10 @@
       <header class="top-bar">
         <div class="top-bar-left">
           <div class="top-bar-channel">
-            <span class="hash">#</span><span id="current-channel-name">general</span>
+            <span class="hash">#</span><span id="current-channel-name">The Mead Hall</span>
           </div>
           <div class="top-bar-subtitle" id="current-channel-desc">
-            Kinship hall chat for everyday talk.
+            A warm hall for everyday talk, tales, and greetings.
           </div>
         </div>
         <div class="top-bar-tabs">
@@ -521,7 +663,7 @@
           <div class="messages" id="messages"></div>
           <div class="input-area">
             <div class="input-wrapper">
-              <textarea id="message-input" rows="1" placeholder="Send a message to the hall..."></textarea>
+              <textarea id="message-input" rows="1" placeholder="Speak in the hall..."></textarea>
               <button class="send-btn" id="send-btn" disabled>Send</button>
             </div>
           </div>
@@ -531,24 +673,17 @@
         <div id="announcements-view" style="display:none;">
           <div class="info-view">
             <div class="info-card">
-              <h3>Kinship Charter</h3>
+              <h3>Hall of Announcements</h3>
               <p>
-                We stand together as a company of friends, crafters, and companions. Respect, patience, and
-                reliability are the pillars of our hall. New and returning players are welcome – we walk at
-                the pace of the fellowship, not the fastest runner.
+                This view mirrors the Hall of Announcements. Officers may post news, event summaries, and
+                important notices here. For guests and members, this is the place to see what the kinship is
+                planning.
               </p>
               <div class="info-tags">
-                <span class="info-tag">Lore Friendly</span>
-                <span class="info-tag">Casual to Organized</span>
-                <span class="info-tag">EU Time Zones</span>
+                <span class="info-tag">News</span>
+                <span class="info-tag">Events</span>
+                <span class="info-tag">Officer Posts</span>
               </div>
-            </div>
-            <div class="info-card">
-              <h3>Hall Etiquette</h3>
-              <p>
-                Keep the hall welcoming. No harassment, no spoilers without warning, and no pressure to play
-                a certain way. Real life comes first – always.
-              </p>
             </div>
           </div>
         </div>
@@ -557,19 +692,52 @@
         <div id="planner-view" style="display:none;">
           <div class="info-view">
             <div class="info-card">
-              <h3>Upcoming Runs</h3>
+              <h3>The War Room – Raid Planner</h3>
               <p>
-                Use the <strong>#raids-and-runs</strong> channel to propose dates and times. Once agreed, an
-                officer can pin the plan and note roles needed.
+                Use The War Room channel to propose dates and times. Once agreed, an officer can record the
+                plan here and note roles needed. This planner is a simple overview – the real chatter happens
+                in the War Room itself.
               </p>
             </div>
             <div class="info-card">
               <h3>Suggested Raid Nights</h3>
               <p>
-                Two evenings per week, EU‑friendly times. We aim for steady progress, not speed clears. If
-                you’re new to group content, this is a safe place to learn.
+                Two evenings per week, EU‑friendly times. We aim for steady progress, not speed clears. New
+                to group content? This is a safe place to learn and ask questions.
               </p>
             </div>
+          </div>
+        </div>
+
+        <!-- MEMBERS VIEW -->
+        <div id="members-view" style="display:none;">
+          <div class="members-view">
+            <div class="info-card" style="margin-bottom:0.8rem;">
+              <h3>Members of the Hall</h3>
+              <p>
+                Those whose names are carved into the stone of the hall. Classes follow LOTRO’s callings,
+                while ranks reflect their standing within the kinship.
+              </p>
+            </div>
+            <div class="members-grid" id="members-grid"></div>
+          </div>
+        </div>
+
+        <!-- ARCHIVES VIEW -->
+        <div id="archives-view" style="display:none;">
+          <div class="archives-view">
+            <div class="info-card">
+              <h3>The Archives</h3>
+              <p>
+                Screenshots, memories, and moments worth keeping. Images you add here are stored in your own
+                browser only – like a personal gallery of the kinship’s journey.
+              </p>
+            </div>
+            <div class="archives-upload">
+              <span>Upload a screenshot or memory:</span>
+              <input type="file" id="archives-file" accept="image/*" />
+            </div>
+            <div class="archives-grid" id="archives-grid"></div>
           </div>
         </div>
       </section>
@@ -577,51 +745,82 @@
   </div>
 
   <script>
-    // Simple front-end "Discord-like" behavior: per-channel messages stored in memory (and localStorage)
+    // CHANNEL DEFINITIONS
 
     const channels = {
-      general: {
-        name: "general",
-        desc: "Kinship hall chat for everyday talk.",
+      mead: {
+        name: "The Mead Hall",
+        desc: "A warm hall for everyday talk, tales, and greetings.",
         seed: [
-          { author: "System", system: true, text: "Welcome to #general – greet your kin and share the day’s tales." }
-        ]
+          { system: true, text: "Welcome to The Mead Hall – share your stories, greet your kin, and warm yourself by the fire." }
+        ],
+        type: "chat"
       },
-      raids: {
-        name: "raids-and-runs",
-        desc: "Planning and talk for group content and raids.",
+      war: {
+        name: "The War Room",
+        desc: "Plans, signups, and tactics for raids and group content.",
         seed: [
-          { author: "System", system: true, text: "Welcome to #raids-and-runs – propose runs, ask for groups, share tactics." }
-        ]
+          { system: true, text: "Welcome to The War Room – propose runs, sign up for raids, and discuss tactics." }
+        ],
+        type: "chat"
       },
       crafting: {
-        name: "crafting-hall",
-        desc: "Recipes, materials, and crafting requests.",
+        name: "The Crafting Hall",
+        desc: "Guides, material requests, and crafting offers.",
         seed: [
-          { author: "System", system: true, text: "Welcome to #crafting-hall – post your needs and offers." }
-        ]
+          { system: true, text: "Welcome to The Crafting Hall – post your needs, offers, and crafting wisdom." }
+        ],
+        type: "chat"
       },
-      recruitment: {
-        name: "recruitment",
-        desc: "Questions from guests and new members.",
+      archives: {
+        name: "The Archives",
+        desc: "Screenshots and memories carved into image and stone.",
+        seed: [],
+        type: "archives"
+      },
+      announcements: {
+        name: "Hall of Announcements",
+        desc: "Official news and notices from the officers.",
         seed: [
-          { author: "System", system: true, text: "Welcome to #recruitment – guests may ask about the kinship here." }
-        ]
+          { system: true, text: "Welcome to the Hall of Announcements – officers post important news here." }
+        ],
+        type: "announcements"
+      },
+      members: {
+        name: "Members of the Hall",
+        desc: "Those whose names are carved into the stone of the kinship.",
+        seed: [],
+        type: "members"
       },
       officers: {
-        name: "officers-table",
-        desc: "Private planning for officers (local only here).",
+        name: "Officers’ Table",
+        desc: "Private planning for the leadership of the kinship (local only here).",
         seed: [
-          { author: "System", system: true, text: "Welcome to #officers-table – leadership planning and notes." }
-        ]
+          { system: true, text: "Welcome to the Officers’ Table – leadership planning and notes." }
+        ],
+        type: "chat"
       }
     };
 
-    const STORAGE_KEY = "hammerOfAuleHallChat_v1";
+    // MEMBERS DATA
+
+    const members = [
+      { name: "Gundrik", class: "Guardian", role: "Lord" },
+      { name: "Bismark", class: "Champion", role: "Seneschal" },
+      { name: "Ithrulod", class: "Rune-keeper", role: "Seneschal" },
+      { name: "Hlegolas", class: "Hunter", role: "Seneschal" },
+      { name: "Junipa", class: "Warden", role: "Kinsman" },
+      { name: "Carthillor", class: "Hunter", role: "Recruit" }
+    ];
+
+    // STORAGE KEYS
+
+    const STORAGE_CHAT_KEY = "hammerOfAuleHallChat_v2";
+    const STORAGE_ARCHIVES_KEY = "hammerOfAuleArchives_v1";
 
     function loadStoredMessages() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_CHAT_KEY);
         if (!raw) return {};
         return JSON.parse(raw);
       } catch {
@@ -631,20 +830,37 @@
 
     function saveStoredMessages(data) {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem(STORAGE_CHAT_KEY, JSON.stringify(data));
+      } catch {}
+    }
+
+    function loadStoredArchives() {
+      try {
+        const raw = localStorage.getItem(STORAGE_ARCHIVES_KEY);
+        if (!raw) return [];
+        return JSON.parse(raw);
       } catch {
-        // ignore
+        return [];
       }
+    }
+
+    function saveStoredArchives(data) {
+      try {
+        localStorage.setItem(STORAGE_ARCHIVES_KEY, JSON.stringify(data));
+      } catch {}
     }
 
     const stored = loadStoredMessages();
     const messagesByChannel = {};
-
     Object.keys(channels).forEach(key => {
       messagesByChannel[key] = stored[key] || channels[key].seed.slice();
     });
 
-    let currentChannel = "general";
+    let archivesItems = loadStoredArchives();
+
+    let currentChannel = "mead";
+
+    // DOM ELEMENTS
 
     const channelListEl = document.getElementById("channel-list");
     const messagesEl = document.getElementById("messages");
@@ -656,10 +872,208 @@
     const chatView = document.getElementById("chat-view");
     const announcementsView = document.getElementById("announcements-view");
     const plannerView = document.getElementById("planner-view");
+    const membersView = document.getElementById("members-view");
+    const archivesView = document.getElementById("archives-view");
+
     const topTabs = document.querySelectorAll(".top-tab");
+
+    const membersGridEl = document.getElementById("members-grid");
+    const archivesFileEl = document.getElementById("archives-file");
+    const archivesGridEl = document.getElementById("archives-grid");
+
+    // CLASS ICONS (detailed LOTRO-style, inline SVG)
+
+    function getClassIconSvg(cls) {
+      const c = cls.toLowerCase();
+      if (c === "guardian") {
+        return `
+          <svg viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="gShield" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f5f5f5"/>
+                <stop offset="0.4" stop-color="#d0d0d0"/>
+                <stop offset="1" stop-color="#7a7a7a"/>
+              </linearGradient>
+            </defs>
+            <path d="M32 4 L52 10 L52 30 C52 42 44 52 32 58 C20 52 12 42 12 30 L12 10 Z"
+              fill="url(#gShield)" stroke="#3a3a3a" stroke-width="2"/>
+            <circle cx="32" cy="26" r="7" fill="#c89b3c" stroke="#5a3b10" stroke-width="2"/>
+          </svg>
+        `;
+      }
+      if (c === "champion") {
+        return `
+          <svg viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="gAxe" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f0e0c0"/>
+                <stop offset="0.5" stop-color="#c89b3c"/>
+                <stop offset="1" stop-color="#7a4a10"/>
+              </linearGradient>
+            </defs>
+            <rect x="29" y="10" width="6" height="44" fill="#5a3b10"/>
+            <path d="M32 10 L48 18 L32 26 Z" fill="url(#gAxe)" stroke="#5a3b10" stroke-width="2"/>
+            <path d="M32 10 L16 18 L32 26 Z" fill="url(#gAxe)" stroke="#5a3b10" stroke-width="2"/>
+          </svg>
+        `;
+      }
+      if (c === "rune-keeper" || c === "rune keeper" || c === "runekeeper") {
+        return `
+          <svg viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="gStone" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#e0e0e0"/>
+                <stop offset="0.5" stop-color="#b0b0b0"/>
+                <stop offset="1" stop-color="#707070"/>
+              </linearGradient>
+            </defs>
+            <rect x="16" y="10" width="32" height="44" rx="6" ry="6"
+              fill="url(#gStone)" stroke="#3a3a3a" stroke-width="2"/>
+            <path d="M22 42 C26 34, 30 30, 34 26 C38 22, 42 20, 46 20"
+              fill="none" stroke="#c89b3c" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="26" cy="24" r="2" fill="#c89b3c"/>
+          </svg>
+        `;
+      }
+      if (c === "hunter") {
+        return `
+          <svg viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="gBow" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f0e0c0"/>
+                <stop offset="0.5" stop-color="#c89b3c"/>
+                <stop offset="1" stop-color="#7a4a10"/>
+              </linearGradient>
+            </defs>
+            <path d="M20 10 C40 18, 40 46, 20 54"
+              fill="none" stroke="url(#gBow)" stroke-width="4" stroke-linecap="round"/>
+            <line x1="20" y1="10" x2="20" y2="54" stroke="#f5f5f5" stroke-width="2"/>
+            <circle cx="20" cy="32" r="3" fill="#f5f5f5"/>
+          </svg>
+        `;
+      }
+      if (c === "warden") {
+        return `
+          <svg viewBox="0 0 64 64">
+            <defs>
+              <linearGradient id="gSpear" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f5f5f5"/>
+                <stop offset="0.4" stop-color="#d0d0d0"/>
+                <stop offset="1" stop-color="#7a7a7a"/>
+              </linearGradient>
+            </defs>
+            <rect x="30" y="12" width="4" height="40" fill="#5a3b10"/>
+            <path d="M32 8 L40 18 L24 18 Z" fill="url(#gSpear)" stroke="#3a3a3a" stroke-width="2"/>
+            <circle cx="32" cy="44" r="6" fill="#c89b3c" stroke="#5a3b10" stroke-width="2"/>
+          </svg>
+        `;
+      }
+      // fallback
+      return `
+        <svg viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="20" fill="#c89b3c" stroke="#5a3b10" stroke-width="3"/>
+        </svg>
+      `;
+    }
+
+    // RENDER MEMBERS
+
+    function renderMembers() {
+      membersGridEl.innerHTML = "";
+      members.forEach(m => {
+        const card = document.createElement("div");
+        card.className = "member-card";
+
+        const icon = document.createElement("div");
+        icon.className = "member-icon";
+        icon.innerHTML = getClassIconSvg(m.class);
+
+        const body = document.createElement("div");
+        body.className = "member-body";
+
+        const nameEl = document.createElement("div");
+        nameEl.className = "member-name";
+        nameEl.textContent = m.name;
+
+        const classEl = document.createElement("div");
+        classEl.className = "member-class";
+        classEl.textContent = m.class;
+
+        const roleEl = document.createElement("div");
+        roleEl.className = "member-role";
+        const r = m.role.toLowerCase();
+        if (r === "lord") roleEl.classList.add("role-lord");
+        else if (r === "seneschal") roleEl.classList.add("role-seneschal");
+        else if (r === "kinsman") roleEl.classList.add("role-kinsman");
+        else roleEl.classList.add("role-recruit");
+        roleEl.textContent = m.role;
+
+        body.appendChild(nameEl);
+        body.appendChild(classEl);
+        body.appendChild(roleEl);
+
+        card.appendChild(icon);
+        card.appendChild(body);
+
+        membersGridEl.appendChild(card);
+      });
+    }
+
+    // RENDER ARCHIVES
+
+    function renderArchives() {
+      archivesGridEl.innerHTML = "";
+      if (!archivesItems.length) {
+        const div = document.createElement("div");
+        div.className = "system-message";
+        div.textContent = "No screenshots in your local archives yet.";
+        archivesGridEl.appendChild(div);
+        return;
+      }
+      archivesItems.forEach(item => {
+        const wrap = document.createElement("div");
+        wrap.className = "archives-item";
+        const img = document.createElement("img");
+        img.src = item.dataUrl;
+        img.alt = item.caption || "Screenshot";
+        const cap = document.createElement("div");
+        cap.className = "archives-caption";
+        cap.textContent = item.caption || "Screenshot from the hall.";
+        wrap.appendChild(img);
+        wrap.appendChild(cap);
+        archivesGridEl.appendChild(wrap);
+      });
+    }
+
+    archivesFileEl.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        archivesItems.push({
+          dataUrl: reader.result,
+          caption: file.name
+        });
+        saveStoredArchives(archivesItems);
+        renderArchives();
+        archivesFileEl.value = "";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // CHAT RENDERING
 
     function renderMessages() {
       messagesEl.innerHTML = "";
+      const channel = channels[currentChannel];
+      if (!channel || channel.type !== "chat" && channel.type !== "announcements") {
+        const div = document.createElement("div");
+        div.className = "system-message";
+        div.textContent = "This hall does not use the chat view.";
+        messagesEl.appendChild(div);
+        return;
+      }
+
       const msgs = messagesByChannel[currentChannel] || [];
       if (!msgs.length) {
         const div = document.createElement("div");
@@ -718,19 +1132,51 @@
     function switchChannel(key) {
       if (!channels[key]) return;
       currentChannel = key;
-      currentChannelNameEl.textContent = channels[key].name;
-      currentChannelDescEl.textContent = channels[key].desc;
+      const ch = channels[key];
+      currentChannelNameEl.textContent = ch.name;
+      currentChannelDescEl.textContent = ch.desc;
 
       document.querySelectorAll(".channels button").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.channel === key);
       });
 
-      renderMessages();
+      // Views
+      chatView.style.display = "none";
+      announcementsView.style.display = "none";
+      plannerView.style.display = "none";
+      membersView.style.display = "none";
+      archivesView.style.display = "none";
+
+      // Tabs: default to Chat
+      topTabs.forEach(t => t.classList.remove("active"));
+      document.querySelector('.top-tab[data-view="chat"]').classList.add("active");
+
+      if (ch.type === "chat") {
+        chatView.style.display = "";
+        renderMessages();
+      } else if (ch.type === "announcements") {
+        // show announcements view and also chat if you want mirrored
+        announcementsView.style.display = "";
+        chatView.style.display = "";
+        renderMessages();
+      } else if (ch.type === "members") {
+        membersView.style.display = "";
+        renderMembers();
+      } else if (ch.type === "archives") {
+        archivesView.style.display = "";
+        renderArchives();
+      }
+      updateInputState();
     }
 
     function sendMessage() {
       const text = inputEl.value.trim();
       if (!text) return;
+      const channel = channels[currentChannel];
+      if (!channel || channel.type === "members" || channel.type === "archives") return;
+      if (channel.type === "announcements") {
+        // In a real app, only officers could post; here we allow local posting.
+      }
       const now = new Date();
       const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
@@ -750,7 +1196,21 @@
 
     function updateSendButton() {
       const hasText = inputEl.value.trim().length > 0;
-      sendBtn.disabled = !hasText;
+      const channel = channels[currentChannel];
+      const canChat = channel && (channel.type === "chat" || channel.type === "announcements");
+      sendBtn.disabled = !hasText || !canChat;
+    }
+
+    function updateInputState() {
+      const channel = channels[currentChannel];
+      const canChat = channel && (channel.type === "chat" || channel.type === "announcements");
+      inputEl.disabled = !canChat;
+      if (!canChat) {
+        inputEl.placeholder = "This hall does not use the chat input.";
+      } else {
+        inputEl.placeholder = "Speak in the hall...";
+      }
+      updateSendButton();
     }
 
     channelListEl.addEventListener("click", (e) => {
@@ -779,24 +1239,28 @@
         topTabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
         const view = tab.dataset.view;
+
+        const ch = channels[currentChannel];
+
         if (view === "chat") {
           chatView.style.display = "";
-          announcementsView.style.display = "none";
+          announcementsView.style.display = ch && ch.type === "announcements" ? "" : "none";
           plannerView.style.display = "none";
         } else if (view === "announcements") {
-          chatView.style.display = "none";
           announcementsView.style.display = "";
+          chatView.style.display = "none";
           plannerView.style.display = "none";
         } else if (view === "planner") {
+          plannerView.style.display = "";
           chatView.style.display = "none";
           announcementsView.style.display = "none";
-          plannerView.style.display = "";
         }
       });
     });
 
-    // Initial render
-    switchChannel("general");
+    // INITIAL
+
+    switchChannel("mead");
     updateSendButton();
   </script>
 </body>
