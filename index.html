@@ -4,19 +4,242 @@
   <meta charset="UTF-8">
   <title>The Hammer of Aulë</title>
 
-  <!-- CSS goes here -->
+  /* --- Dwarven Gate Overlay --- */
+#gate-overlay {
+  position: fixed;
+  inset: 0;
+  background: #050607;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+.gate-slab {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #2b2b2b;
+  background-image: linear-gradient(145deg, #3a3a3a, #1e1e1e);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  transition: transform 2s cubic-bezier(.65,0,.35,1);
+}
+
+#gate-left {
+  left: 0;
+  transform: translateX(0);
+}
+
+#gate-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+#gate-seam {
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, #ffb45e, #ff6a00, #ffb45e);
+  box-shadow: 0 0 20px #ff6a00;
+  opacity: 0.7;
+  transition: opacity 1s ease;
+}
+
+/* Opening */
+.gate-open-left {
+  transform: translateX(-100%);
+}
+
+.gate-open-right {
+  transform: translateX(100%);
+}
+
+/* Fast mechanical snap close */
+.gate-close-left {
+  transform: translateX(0);
+  transition-duration: 0.6s;
+}
+
+.gate-close-right {
+  transform: translateX(0);
+  transition-duration: 0.6s;
+}
+
+/* Fade gate away after opening */
+.gate-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Login panel */
+#gate-login-panel {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #e6e6e6;
+  font-family: "Cinzel", serif;
+}
+
+.gate-title {
+  font-size: 26px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#gate-name-input {
+  width: 260px;
+  padding: 10px;
+  margin-top: 20px;
+  background: #1a1a1a;
+  border: 2px solid #444;
+  color: #fff;
+  font-size: 16px;
+}
+
+#gate-rank-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.rank-btn {
+  width: 48px;
+  height: 48px;
+  background: #222;
+  border: 2px solid #555;
+  color: #d0d0d0;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.rank-btn:hover {
+  background: #333;
+}
+
+.rank-btn.selected {
+  background: #444;
+  border-color: #888;
+}
+
+#gate-enter-btn {
+  margin-top: 25px;
+  padding: 10px 20px;
+  background: #3a3a3a;
+  border: 2px solid #666;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* --- Hall container rise/sink --- */
+#hall-container {
+  position: relative;
+  transform: translateY(100vh);
+  transition: transform 2s cubic-bezier(.65,0,.35,1);
+  z-index: 1;
+}
+
+.hall-rise {
+  transform: translateY(0);
+}
+
+.hall-sink {
+  transform: translateY(100vh);
+}
   <style>
   </style>
 
 </head>
 <body>
 
-  <!-- Gate HTML goes here -->
+  <!-- Dwarven Gate Overlay -->
+<div id="gate-overlay">
+  <div id="gate-left" class="gate-slab"></div>
+  <div id="gate-right" class="gate-slab"></div>
+  <div id="gate-seam"></div>
 
-  <!-- Hall HTML goes here -->
+  <div id="gate-login-panel">
+    <h1 class="gate-title">The Hammer of Aulë</h1>
 
-  <!-- JavaScript goes here -->
-  <script>
+    <input id="gate-name-input" type="text" placeholder="Enter your name..." />
+
+    <div id="gate-rank-buttons">
+      <button data-rank="recruit" class="rank-btn">ᚱ</button>
+      <button data-rank="kinsman" class="rank-btn">ᚲ</button>
+      <button data-rank="seneschal" class="rank-btn">ᛋ</button>
+      <button data-rank="lord" class="rank-btn">ᛚ</button>
+      <button data-rank="thane" class="rank-btn">ᚦ</button>
+    </div>
+
+    <button id="gate-enter-btn">Enter the Hall</button>
+  </div>
+</div>
+
+
+<!-- Hall Container -->
+<div id="hall-container">
+  <div id="app">
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Halls</div>
+        <button id="logout-btn" class="logout-btn">Log out</button>
+      </div>
+      <div id="channel-list" class="channels"></div>
+    </div>
+
+    <!-- Main Area -->
+    <div id="main-area">
+
+      <!-- Channel Header -->
+      <div id="channel-header">
+        <div id="current-channel-name"></div>
+        <div id="current-channel-desc"></div>
+      </div>
+
+      <!-- Top Tabs -->
+      <div id="top-tabs">
+        <button class="top-tab" data-view="chat">Chat</button>
+        <button class="top-tab" data-view="announcements">Announcements</button>
+        <button class="top-tab" data-view="planner">Planner</button>
+        <button class="top-tab" data-view="members">Members</button>
+        <button class="top-tab" data-view="archives">Archives</button>
+
+<script>
+// ---------------------- Gate State ----------------------
+let gateState = "closed"; // "closed" | "opening" | "hall-visible" | "closing"
+
+const gateOverlay = document.getElementById("gate-overlay");
+const gateLeft = document.getElementById("gate-left");
+const gateRight = document.getElementById("gate-right");
+const gateSeam = document.getElementById("gate-seam");
+const hall = document.getElementById("hall-container");
+
+const nameInput = document.getElementById("gate-name-input");
+const rankButtons = document.querySelectorAll(".rank-btn");
+const enterBtn = document.getElementById("gate-enter-btn");
+const logoutBtn = document.getElementById("logout-btn");
+
+let selectedRank = null;
+
+// ---------------------- Rank Selection ----------------------
+rankButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    rankButtons.forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedRank = btn.dataset.rank;
+  });
+});
+
+// ---------------------- Hall Data ----------------------
+const channels = [
+  { id: "mead",  name: "Mead Hall",     desc: "General kinship chatter by the fire  <script>
   </script>
 
 </body>
